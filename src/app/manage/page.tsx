@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {  Server, Database, Network } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import Footer from '@/components/Footer'
 
 const page = () => {
     const infrastructureItems = [
@@ -33,6 +34,7 @@ const page = () => {
           ))}
         </div>
       </main>
+      <Footer />
     </div>
   )
 }
