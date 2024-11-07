@@ -1,14 +1,12 @@
 "use client"
 
-import { useState } from 'react'
-import Link from 'next/link'
+import {  useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,  } from "@/components/ui/dialog"
-import { Cloud, Database, Server,  Zap,  } from 'lucide-react'
+import {  Database, MessageCircle, Server,  Zap,  } from 'lucide-react'
 import { Bar, BarChart,  ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 
 const costData = [
@@ -50,6 +48,9 @@ const infrastructureItems = [
 export default function AdvancedDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
   const [isAIDialogOpen, setIsAIDialogOpen] = useState(false)
+  const [isChatbotOpen,setisChatbotOpen]=useState(false)
+
+  
 
   const AIInsights = () => (
     <Dialog open={isAIDialogOpen} onOpenChange={setIsAIDialogOpen}>
@@ -209,6 +210,20 @@ export default function AdvancedDashboard() {
             </Card>
           </TabsContent>
         </Tabs>
+        <div className="chatbot">
+        {isChatbotOpen && (<iframe 
+                    src='https://stone-canyon.vercel.app/'
+                    className='fixed bottom-20 right-4 w-96 h-[500px] border border-gray-200 rounded-lg '
+                    title='chatbot'
+        />)}
+        <Button 
+            onClick={()=>setisChatbotOpen((prev)=>!prev)}
+            className="fixed bottom-4 right-4 w-12 h-12 rounded-full p-0"
+        >
+            <MessageCircle className='h-6 w-6'/>
+        </Button>
+        </div>
+                
       </main>
 
       <footer className="container mx-auto px-4 py-6 text-center text-gray-600">
