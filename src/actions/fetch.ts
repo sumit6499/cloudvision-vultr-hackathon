@@ -1,20 +1,6 @@
 "use server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-export async function fetchCompletion(message: string) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/chatbot/completion`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.VULTR_API_KEY}`,
-      },
-      body: JSON.stringify({ message }),
-    }
-  );
-  return await res.json();
-}
 
 export const uploadDiagram = async (formData: FormData) => {
   const response = await fetch(

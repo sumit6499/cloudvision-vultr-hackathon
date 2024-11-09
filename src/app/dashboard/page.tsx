@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,  }
 import {  Database, MessageCircle, Server,  Zap,  } from 'lucide-react'
 import { Bar, BarChart,  ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
 import { Input } from "@/components/ui/input"
-import { fetchCompletion, getChatCompletion } from '@/actions/fetch'
+import { getChatCompletion } from '@/actions/fetch'
 
 const costData = [
   { name: "Jan", database: 300, server: 400, network: 200 },
