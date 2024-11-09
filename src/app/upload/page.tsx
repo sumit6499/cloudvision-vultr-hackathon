@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import { Upload, Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Page() {
   const [file, setFile] = useState<File | null>(null);
@@ -86,7 +86,6 @@ export default Page;
 
 const Infrastructure = ({ diagramID }: { diagramID: string | null }) => {
   const [creating, setCreating] = useState(false);
-  const [infraCreated, setInfraCreated] = useState(false);
 
   const staticIds = [
     "3e906710-7eeb-4138-a3ec-3452ad8898fd",
@@ -105,13 +104,8 @@ const Infrastructure = ({ diagramID }: { diagramID: string | null }) => {
     const res = await createInfra(staticId);
     console.log(res);
     setCreating(false);
-    setInfraCreated(true);
     window.location.href = '/dashboard';
   };
-
-  useEffect(() => {
-    console.log(diagramID);
-  }, [diagramID]);
 
   return (
     <div className="container mx-auto px-4 py-16 flex flex-col gap-4 justify-center items-center border-2 border-blue-300 rounded-lg">

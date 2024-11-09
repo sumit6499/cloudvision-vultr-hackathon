@@ -136,15 +136,14 @@ type InfrastructureData = {
 };
 
 export default function AdvancedDashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
   const [isAIDialogOpen, setIsAIDialogOpen] = useState(false)
-  const [isChatbotOpen,setisChatbotOpen]=useState(false)
+  const [isChatbotOpen, setisChatbotOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: 'Hello! How can I help you today?' }
   ])
   const [input, setInput] = useState('')
-  const [infrastructureData, setInfrastructureData] = useState<InfrastructureData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [infrastructureData, setInfrastructureData] = useState<InfrastructureData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchData = async () => {
     try {
@@ -353,10 +352,10 @@ export default function AdvancedDashboard() {
         
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="flex space-x-4">
-            <TabsTrigger value="overview" onClick={() => setActiveTab("overview")} className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-300">Overview</TabsTrigger>
-            <TabsTrigger value="databases" onClick={() => setActiveTab("databases")} className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-300">Databases</TabsTrigger>
-            <TabsTrigger value="servers" onClick={() => setActiveTab("servers")} className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-300">Servers</TabsTrigger>
-            <TabsTrigger value="costs" onClick={() => setActiveTab("costs")} className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-300">Costs</TabsTrigger>
+            <TabsTrigger value="overview" className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-300">Overview</TabsTrigger>
+            <TabsTrigger value="databases" className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-300">Databases</TabsTrigger>
+            <TabsTrigger value="servers" className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-300">Servers</TabsTrigger>
+            <TabsTrigger value="costs" className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded transition-colors duration-300">Costs</TabsTrigger>
           </TabsList>
           
           <TabsContent value="overview">
