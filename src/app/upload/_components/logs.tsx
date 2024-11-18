@@ -41,21 +41,15 @@ export const Logs = ({
         })),
       ]);
 
-      // Check if any log has "finished" message
       if (
-        logs[logs.length - 1].message.includes(
-          "Image processed and code generated successfully"
+        fetchedLogs.some((log) =>
+          log.message.includes(
+            "Image processed and code generated successfully"
+          )
         ) &&
         !creating
       ) {
-        setLogs((prevLogs) => [
-          ...prevLogs,
-          {
-            type: "info",
-            message: "⏱️ Waiting for terraform to initialize",
-            timestamp: new Date().toISOString(),
-          },
-        ]);
+        console.log("Creating infra...");
         await handleCreateInfra();
       }
       if (
