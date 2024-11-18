@@ -60,8 +60,8 @@ export const ChatBot = ({
   };
 
   return (
-    <Card className="fixed bottom-20 right-4 w-96 border border-gray-200 rounded-lg shadow-lg">
-      <CardHeader className="py-3 border-b bg-primary">
+    <Card className="fixed bottom-20 right-4 w-96 border border-[#222222] bg-[#111111] rounded-lg shadow-lg">
+      <CardHeader className="py-3 border-b border-[#222222] bg-primary">
         <CardTitle className="text-sm font-semibold text-primary-foreground flex items-center">
           <MessageCircle className="h-4 w-4 mr-2" />
           Infrastructure Assistant
@@ -88,14 +88,14 @@ export const ChatBot = ({
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <form onSubmit={handleSubmit} className="p-4 border-t bg-background">
+      <form onSubmit={handleSubmit} className="p-4 border-t border-[#222222] bg-background">
         <div className="flex gap-2">
           <Input
             autoFocus
             value={input}
             onChange={handleInputChange}
             placeholder="Ask about your infrastructure..."
-            className="flex-1 focus-visible:ring-primary"
+            className="flex-1 focus-visible:ring-[#222222]"
           />
           <Button type="submit" size="sm" className="px-4">
             <MessageCircle className="h-4 w-4" />
