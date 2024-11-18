@@ -43,11 +43,14 @@ export const UploadFile = ({
   };
 
   return (
-    <main className="container mx-auto px-4 py-16">
+    <main className="container mx-auto max-w-xl px-4 py-16">
       <h1 className="text-4xl font-bold mb-8 text-center">
         Upload Your Infrastructure Image
       </h1>
-      <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
+      <form 
+        onSubmit={handleSubmit} 
+        className="w-full"
+      >
         <div className="mb-6">
           <Label
             htmlFor="infrastructure-image"
@@ -85,7 +88,7 @@ export const UploadFile = ({
         <div>
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-md flex items-center justify-center"
+            className="w-full py-2 bg-blue-600 hover:bg-blue-700 disabled:cursor-not-allowed text-white rounded-md flex items-center justify-center"
             disabled={!file || loading}
           >
             <Upload className="mr-2 h-4 w-4" />
