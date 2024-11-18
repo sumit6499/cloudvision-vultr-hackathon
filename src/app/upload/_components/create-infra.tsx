@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
 export const CreateInfra = ({
-  diagramID = "1234",
+  diagramID,
 }: {
   diagramID: string | null;
 }) => {
