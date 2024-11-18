@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header";
-
-
+import { Navbar } from "@/components/navbar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased`}
-      >
-        <Header />
-        {children}
+      <body className={`antialiased bg-[#111111] md:h-screen text-white`}>
+        <Navbar />
+        <div className="max-w-[1300px] mx-auto px-5 md:h-[calc(100vh-60px)]">
+          {children}
+        </div>
       </body>
     </html>
   );
