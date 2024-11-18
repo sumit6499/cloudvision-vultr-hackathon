@@ -1,6 +1,8 @@
+import { getLogs } from "@/actions/logs";
 import { useState, useEffect } from "react";
 
 type Log = {
+  timestamp: string;
   message: string;
   type: "info" | "error" | "success" | "warning";
 };
@@ -9,68 +11,38 @@ export const Logs = ({
   creating,
   setSuccess,
   setCreating,
+  diagramID,
 }: {
   creating: boolean;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setCreating: React.Dispatch<React.SetStateAction<boolean>>;
+  diagramID: string;
 }) => {
   const [logs, setLogs] = useState<Log[]>([]);
 
   // Mock logs for demonstration - replace with actual log fetching logic
   useEffect(() => {
     const fetchLogs = async () => {
-      // TODO: Replace with actual API call to fetch logs
-      const mockLogs: Log[] = [
-        { message: "Initializing infrastructure...", type: "info" as const },
-        { message: "Creating VPC...", type: "info" as const },
-        { message: "Setting up security groups...", type: "info" as const },
-        { message: "Deploying resources...", type: "info" as const },
-        // TODO: Add error logs
-        { message: "Error creating VPC...", type: "error" as const },
-        {
-          message: "Error setting up security groups...",
-          type: "error" as const,
-        },
-        // TODO: Add success logs
-        {
-          message: "Infrastructure created successfully!",
-          type: "success" as const,
-        },
-        { message: "Infrastructure creation failed!", type: "error" as const },
-        // warning logs
-        {
-          message: "Warning: VPC creation may take longer than expected.",
-          type: "warning" as const,
-        },
-        {
-          message: "Warning: Security groups setup may fail.",
-          type: "warning" as const,
-        },
-        {
-          message: "Infrastructure creation completed!",
-          type: "success" as const,
-        },
-      ];
+      const fetchedLogs = await getLogs({diagramID});
+      setLogs([
+        ...fetchedLogs.map((log) => ({
+          ...log,
+          timestamp: new Date().toISOString(),
+        })),
+      ]);
 
-      // Simulate real-time logs
-      mockLogs.forEach((log, index) => {
-        setTimeout(() => {
-          setLogs((prev) => [...prev, log]);
-          if (log.message === "Infrastructure creation completed!") {
-            setLogs((prev) => [
-              ...prev,
-              { message: "Redirecting to dashboard...", type: "info" as const },
-            ]);
-            new Promise((resolve) => setTimeout(resolve, 2000)).then(() => {
-              setSuccess(true);
-              setCreating(false);
-            });
-          }
-        }, index * 1000);
-      });
+      // Check if any log has "finished" message
+      if (fetchedLogs.some((log) => log.message === "finished")) {
+        setSuccess(true);
+        setCreating(false);
+      }
     };
 
-    creating && fetchLogs();
+    if (creating) {
+      fetchLogs();
+      const interval = setInterval(fetchLogs, 5000);
+      return () => clearInterval(interval);
+    }
   }, [creating]);
 
   return (
@@ -90,7 +62,7 @@ export const Logs = ({
               }`}
               key={index}
             >
-              $ {log.message}
+              {log.timestamp} - {log.message}
             </div>
           ))}
         </pre>

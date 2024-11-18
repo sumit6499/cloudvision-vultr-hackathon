@@ -37,7 +37,12 @@ export const CreateInfra = ({ diagramID }: { diagramID: string | null }) => {
           {creating ? "Creating Infrastructure..." : "Create Infrastructure"}
         </Button>
       </div>
-      <Logs creating={creating} setCreating={setCreating} setSuccess={setSuccess} />
+      <Logs
+        diagramID={diagramID!}
+        creating={creating}
+        setCreating={setCreating}
+        setSuccess={setSuccess}
+      />
     </div>
   );
 };

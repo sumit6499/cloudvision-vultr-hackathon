@@ -11,8 +11,9 @@ import {
   renderDatabaseContent,
   renderServersContent,
   Cost,
+  renderBlockContent,
 } from "./_components";
-import { InfrastructureData, Message } from "./_components/types";
+import { BlockStorageItem, InfrastructureData, Message } from "./_components/types";
 
 const costData = [
   { name: "Jan", database: 300, server: 400, network: 200 },
@@ -55,12 +56,15 @@ export default function AdvancedDashboard() {
   const getDatabaseItems = () => {
     return (
       infrastructureData?.data.db.databases.map((db) => ({
-        name: db.name,
+        name: db.dbname,
         type: "Database",
         region: db.region,
-        replicas: db.replicas || 1,
-        availabilityZones: db.availability_zones || [],
+        replicas: db.read_replicas?.length || 0,
+        databaseEngine: db.database_engine,
         status: db.status,
+        password: db.password,
+        user: db.user,
+        port: db.port,
       })) || []
     );
   };
@@ -68,14 +72,24 @@ export default function AdvancedDashboard() {
   const getServerItems = () => {
     return (
       infrastructureData?.data.instances.instances.map((server) => ({
-        name: server.name,
+        name: server.hostname,
         type: "Server",
         region: server.region,
-        instances: server.count || 1,
-        availabilityZones: server.availability_zones || [],
+        instances: server.vcpu_count || 0,
+        ip: server.main_ip,
         status: server.status,
       })) || []
     );
+  };
+
+  const getBlockStorages = () => {
+    return infrastructureData?.data.blockStorage.blocks.map((block) => ({
+      id: block.id,
+      name: block.block_type,
+      size: block.size_gb,
+      status: block.status,
+      cost: block.cost,
+    })) as BlockStorageItem[];
   };
 
   return (
@@ -103,6 +117,12 @@ export default function AdvancedDashboard() {
               Servers
             </TabsTrigger>
             <TabsTrigger
+              value="block"
+              className="md:px-4 px-3 rounded transition-colors duration-300"
+            >
+              Block Storage
+            </TabsTrigger>
+            <TabsTrigger
               value="costs"
               className="md:px-4 px-3 rounded transition-colors duration-300"
             >
@@ -117,10 +137,13 @@ export default function AdvancedDashboard() {
             />
           </TabsContent>
           <TabsContent value="databases">
-            {renderDatabaseContent(isLoading, getDatabaseItems)}
+            {renderDatabaseContent({ isLoading, getDatabaseItems })}
           </TabsContent>
           <TabsContent value="servers">
             {renderServersContent(isLoading, getServerItems)}
+          </TabsContent>
+          <TabsContent value="block">
+            {renderBlockContent({ isLoading, getBlockStorages })}
           </TabsContent>
           <TabsContent value="costs">
             <Cost costData={costData} />

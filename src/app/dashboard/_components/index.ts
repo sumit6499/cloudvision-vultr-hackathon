@@ -5,3 +5,4 @@ export { AIInsights } from "./ai-insights";
 export { renderDatabaseContent } from "./databases";
 export { renderServersContent } from "./servers";
 export { Cost } from "./cost";
+export { renderBlockContent } from "./block";

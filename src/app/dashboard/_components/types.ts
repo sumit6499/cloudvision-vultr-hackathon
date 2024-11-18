@@ -26,16 +26,19 @@ export type DatabaseItem = {
   name: any;
   type: string;
   region: any;
-  replicas: any;
-  availabilityZones: any;
-  status: any;
+  replicas: number;
+  databaseEngine: string;
+  status: string;
+  password: string;
+  user: string;
+  port: string;
 };
 
 export type ServerItem = {
   name: any;
   region: any;
   instances: any;
-  availabilityZones: any;
+  ip: string;
   status: any;
 };
 
@@ -44,4 +47,12 @@ export type CostData = {
   database: number;
   server: number;
   network: number;
+};
+
+export type BlockStorageItem = {
+  id: string;
+  name: string;
+  size: number;
+  status: string;
+  cost: number;
 };
