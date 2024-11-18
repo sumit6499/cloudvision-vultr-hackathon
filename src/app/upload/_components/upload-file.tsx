@@ -55,19 +55,19 @@ export const UploadFile = ({
           >
             Infrastructure Image
           </Label>
-          <div className="relative">
+          <div>
             <Input
               id="infrastructure-image"
               type="file"
               accept="image/*"
-              className="hidden"
+              style={{ display: 'none' }}
               onChange={handleFileChange}
             />
             <label
               htmlFor="infrastructure-image"
               className="flex flex-col items-center justify-center w-full h-40 px-4 transition border-2 border-dashed border-[#353535] rounded-lg cursor-pointer"
             >
-              <div className="flex flex-col items-center justify-center py-20 pb-20">
+              <div className="flex flex-col items-center justify-center pt-5">
                 <Upload className="w-6 h-6 mb-3 text-[#656565]" />
                 <p className="mb-2 text-sm text-[#656565]">
                   <span className="font-semibold">Click to upload</span> or drag and drop
@@ -82,14 +82,16 @@ export const UploadFile = ({
             </label>
           </div>
         </div>
-        <Button
-          type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 hover:text-white text-white"
-          disabled={!file || loading}
-        >
-          <Upload className="mr-2 h-4 w-4" />
-          {loading ? "Uploading..." : "Upload Image"}
-        </Button>
+        <div>
+          <button
+            type="submit"
+            className="w-full py-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-md flex items-center justify-center"
+            disabled={!file || loading}
+          >
+            <Upload className="mr-2 h-4 w-4" />
+            {loading ? "Uploading..." : "Upload Image"}
+          </button>
+        </div>
       </form>
     </main>
   );

@@ -39,7 +39,7 @@ export const Navbar = () => {
             <button onClick={() => setOpen(!open)} className="p-2 rounded-md hover:bg-[#222222] cursor-pointer">
                 {open ? <X /> : <Menu />}
             </button>
-            {open && <div className="absolute top-[60px] left-0 w-full h-[calc(100vh-60px)] bg-[#111111]/95 backdrop-blur-md z-10">
+            {open && <div className="absolute top-[60px] left-0 w-full h-[calc(100vh-60px)] bg-[#111111]/90 backdrop-blur-md z-50">
                 <div className="flex flex-col items-center text-xl gap-5 justify-start h-full p-5">
                     <Link onClick={() => setOpen(false)} className="hover:underline" href="/">Home</Link>
                     <Link onClick={() => setOpen(false)} className="hover:underline" href="/upload">Upload</Link>
