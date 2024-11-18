@@ -1,52 +1,43 @@
 "use client";
 import { createInfra } from "@/actions/fetch";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Logs } from "./logs";
 
-export const CreateInfra = ({
-  diagramID,
-}: {
-  diagramID: string | null;
-}) => {
+export const CreateInfra = ({ diagramID }: { diagramID: string | null }) => {
   const [creating, setCreating] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleCreateInfra = async () => {
     if (!diagramID) return;
     setCreating(true);
-    const res = await createInfra(diagramID);
-    console.log(res);
-    setCreating(false);
-    window.location.href = "/dashboard";
+    await createInfra(diagramID);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
   };
+  useEffect(() => {
+    if (success) {
+      window.location.href = "/dashboard";
+    }
+  }, [success]);
 
   return (
-    <div className="container mx-auto px-4 py-16 flex flex-col gap-4 justify-center items-center  rounded-lg">
-      <div className="flex flex-col gap-2 justify-center items-center">
-        <h1 className="text-4xl font-bold text-center">
-          Generate Infrastructure
-        </h1>
-        <p className="text-[#656565] text-center">
-          Your architecture is ready to be generated!
-        </p>
-      </div>
-      <div className="flex flex-col gap-4 justify-center items-center">
+    <div>
+      <div className="flex sm:flex-row flex-col sm:justify-between gap-4 sm:gap-0 items-center py-5">
         <div className="flex flex-col gap-2">
-          <Button
-            onClick={handleCreateInfra}
-            disabled={creating}
-            className="w-full"
-          >
-            {creating ? "Creating Infrastructure..." : "Create Infrastructure"}
-          </Button>
-          {creating && (
-            <p className="text-zinc-500 text-sm">
-              Please wait while we process your request
-            </p>
-          )}
+          <h1 className="text-4xl font-bold">Generate Infrastructure</h1>
+          <p className="text-[#656565]">
+            Your architecture is ready to be generated!
+          </p>
         </div>
-        {creating && <Loader2 className="animate-spin" />}
+        <Button
+          className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-600/80"
+          onClick={handleCreateInfra}
+          disabled={creating}
+        >
+          {creating ? "Creating Infrastructure..." : "Create Infrastructure"}
+        </Button>
       </div>
+      <Logs creating={creating} setCreating={setCreating} setSuccess={setSuccess} />
     </div>
   );
 };

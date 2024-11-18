@@ -17,6 +17,7 @@ export const uploadDiagram = async (formData: FormData) => {
 };
 
 export const createInfra = async (diagramID: string) => {
+  return { success: true };
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/infra/create`,
     {
