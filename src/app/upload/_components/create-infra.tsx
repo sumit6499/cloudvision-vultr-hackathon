@@ -12,7 +12,6 @@ export const CreateInfra = ({ diagramID }: { diagramID: string | null }) => {
     if (!diagramID) return;
     setCreating(true);
     await createInfra(diagramID);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
   };
   useEffect(() => {
     if (success) {
@@ -29,15 +28,9 @@ export const CreateInfra = ({ diagramID }: { diagramID: string | null }) => {
             Your architecture is ready to be generated!
           </p>
         </div>
-        <Button
-          className="w-full sm:w-auto bg-blue-600 text-white hover:bg-blue-600/80"
-          onClick={handleCreateInfra}
-          disabled={creating}
-        >
-          {creating ? "Creating Infrastructure..." : "Create Infrastructure"}
-        </Button>
       </div>
       <Logs
+        handleCreateInfra={handleCreateInfra}
         diagramID={diagramID!}
         creating={creating}
         setCreating={setCreating}

@@ -12,9 +12,26 @@ export const getLogs = async ({ diagramID }: { diagramID: string }) => {
   try {
     const logs = await redis.lrange(`logs-${diagramID}`, 0, -1);
     console.log("logs", logs);
-    if (!logs) return [];
+    if (!logs)
+      return [
+        {
+          type: "info",
+          message: "Waiting for server to respond!",
+        },
+      ];
 
-    return logs.map((log) => JSON.parse(log)) as Log[];
+    return [
+      {
+        type: "info",
+        message: "Waiting for server to respond!",
+      },
+      ...logs,
+    ].map((log) => {
+      if (typeof log === 'string') {
+        return JSON.parse(log);
+      }
+      return log;
+    }) as Log[];
   } catch (error) {
     console.error("Error fetching logs:", error);
     return [];

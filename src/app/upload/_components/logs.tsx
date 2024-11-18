@@ -1,5 +1,5 @@
 import { getLogs } from "@/actions/logs";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 type Log = {
   timestamp: string;
@@ -12,37 +12,74 @@ export const Logs = ({
   setSuccess,
   setCreating,
   diagramID,
+  handleCreateInfra,
 }: {
   creating: boolean;
   setSuccess: React.Dispatch<React.SetStateAction<boolean>>;
   setCreating: React.Dispatch<React.SetStateAction<boolean>>;
   diagramID: string;
+  handleCreateInfra: () => Promise<void>;
 }) => {
   const [logs, setLogs] = useState<Log[]>([]);
+  const logRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (logRef.current) {
+      logRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [logs]);
 
   // Mock logs for demonstration - replace with actual log fetching logic
   useEffect(() => {
     const fetchLogs = async () => {
-      const fetchedLogs = await getLogs({diagramID});
+      const fetchedLogs = await getLogs({ diagramID });
       setLogs([
         ...fetchedLogs.map((log) => ({
           ...log,
           timestamp: new Date().toISOString(),
+          type: log.type as "info" | "error" | "success" | "warning",
         })),
       ]);
 
       // Check if any log has "finished" message
-      if (fetchedLogs.some((log) => log.message === "finished")) {
+      if (
+        logs[logs.length - 1].message.includes(
+          "Image processed and code generated successfully"
+        ) &&
+        !creating
+      ) {
+        setLogs((prevLogs) => [
+          ...prevLogs,
+          {
+            type: "info",
+            message: "⏱️ Waiting for terraform to initialize",
+            timestamp: new Date().toISOString(),
+          },
+        ]);
+        await handleCreateInfra();
+      }
+      if (
+        fetchedLogs.some((log) =>
+          log.message.includes("Task Finished successfully!")
+        )
+      ) {
+        setLogs((prevLogs) => [
+          ...prevLogs,
+          {
+            type: "info",
+            message: "Redirecting to dashboard...",
+            timestamp: new Date().toISOString(),
+          },
+        ]);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         setSuccess(true);
         setCreating(false);
       }
     };
 
-    if (creating) {
-      fetchLogs();
-      const interval = setInterval(fetchLogs, 5000);
-      return () => clearInterval(interval);
-    }
+    fetchLogs();
+    const interval = setInterval(fetchLogs, 5000);
+    return () => clearInterval(interval);
   }, [creating]);
 
   return (
@@ -65,6 +102,7 @@ export const Logs = ({
               {log.timestamp} - {log.message}
             </div>
           ))}
+          <div ref={logRef} />
         </pre>
       </div>
     </div>
