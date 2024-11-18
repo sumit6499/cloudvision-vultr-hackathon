@@ -8,7 +8,7 @@ import { useState } from "react";
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
   return (
-    <nav className="w-full h-[60px] sticky top-0  bg-[#111] flex justify-center items-center px-5 border-b border-[#222222]">
+    <nav className="w-full h-[60px] sticky top-0  bg-[#111] flex justify-center items-center sm:px-5 px-2 border-b border-[#222222]">
       <div className="w-full max-w-[1300px] flex justify-between items-center">
         <div>
           <Link className="flex items-center gap-1" href="/">
