@@ -15,7 +15,7 @@ export const CreateInfra = ({ diagramID }: { diagramID: string | null }) => {
   };
   useEffect(() => {
     if (success) {
-      window.location.href = "/dashboard";
+      window.location.href = `/dashboard?diagramId=${diagramID}`;
     }
   }, [success]);
 

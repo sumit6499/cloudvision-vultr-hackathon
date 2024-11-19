@@ -5,24 +5,20 @@ import { getChatCompletion } from "@/actions/fetch";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useChat } from "ai/react";
 
 type Message = {
   role: "user" | "assistant";
   content: string;
 };
 
-export const ChatBot = ({
-  messages,
-  input,
-  setInput,
-  setMessages,
-}: {
-  messages: Message[];
-  input: string;
-  setInput: (value: string) => void;
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
-}) => {
+export const ChatBot = ({ diagramId }: { diagramId: string }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    body: {
+      diagramId: diagramId,
+    },
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -32,32 +28,6 @@ export const ChatBot = ({
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMessage = input.trim();
-    setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
-
-    try {
-      const res = (await getChatCompletion(userMessage)) as string;
-      setMessages((prev) => [...prev, { role: "assistant", content: res }]);
-    } catch (error) {
-      console.error("Chat error:", error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content: "Sorry, I encountered an error. Please try again.",
-        },
-      ]);
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
-  };
 
   return (
     <Card className="fixed bottom-20 right-4 w-96 border border-[#222222] bg-[#111111] rounded-lg shadow-lg">

@@ -14,6 +14,7 @@ import {
   renderBlockContent,
 } from "./_components";
 import { BlockStorageItem, InfrastructureData, Message } from "./_components/types";
+import { useSearchParams } from 'next/navigation'
 
 const costData = [
   { name: "Jan", database: 300, server: 400, network: 200 },
@@ -27,6 +28,8 @@ const costData = [
 export default function AdvancedDashboard() {
   const [isAIDialogOpen, setIsAIDialogOpen] = useState(false);
   const [isChatbotOpen, setisChatbotOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const diagramId = searchParams.get("diagramId");
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Hello! How can I help you today?" },
   ]);
@@ -151,12 +154,7 @@ export default function AdvancedDashboard() {
         </Tabs>
         <div className="chatbot">
           {isChatbotOpen && (
-            <ChatBot
-              messages={messages}
-              input={input}
-              setInput={setInput}
-              setMessages={setMessages}
-            />
+            <ChatBot diagramId={diagramId!} />
           )}
           <Button
             onClick={() => setisChatbotOpen((prev) => !prev)}
