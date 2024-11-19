@@ -25,11 +25,29 @@ const costData = [
   { name: "Jun", database: 400, server: 500, network: 280 },
 ];
 
-export default function AdvancedDashboard() {
-  const [isAIDialogOpen, setIsAIDialogOpen] = useState(false);
-  const [isChatbotOpen, setisChatbotOpen] = useState(false);
+// New component to handle search params
+function ChatbotSection() {
   const searchParams = useSearchParams();
   const diagramId = searchParams.get("diagramID");
+  const [isChatbotOpen, setisChatbotOpen] = useState(false);
+
+  return (
+    <div className="chatbot">
+      {isChatbotOpen && (
+        <ChatBot diagramId={diagramId!} />
+      )}
+      <Button
+        onClick={() => setisChatbotOpen((prev) => !prev)}
+        className="fixed bottom-4 right-4 w-12 h-12 rounded-full p-0 bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-300"
+      >
+        <MessageCircle className="h-6 w-6" />
+      </Button>
+    </div>
+  );
+}
+
+export default function AdvancedDashboard() {
+  const [isAIDialogOpen, setIsAIDialogOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Hello! How can I help you today?" },
   ]);
@@ -97,75 +115,65 @@ export default function AdvancedDashboard() {
 
   return (
     <div className="h-full">
-      <Suspense fallback={<div>Loading...</div>}>
-        <main className="container mx-auto py-8">
-          <Header onAIInsightsClick={() => setIsAIDialogOpen(true)} />
-          <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="flex md:space-x-4 md:justify-start justify-between bg-transparent border border-[#222222]">
-              <TabsTrigger
-                value="overview"
-                className="md:px-4 px-3 rounded transition-colors duration-300"
-              >
-                Overview
-              </TabsTrigger>
-              <TabsTrigger
-                value="databases"
-                className="md:px-4 px-3 rounded transition-colors duration-300"
-              >
-                Databases
-              </TabsTrigger>
-              <TabsTrigger
-                value="servers"
-                className="md:px-4 px-3 rounded transition-colors duration-300"
-              >
-                Servers
-              </TabsTrigger>
-              <TabsTrigger
-                value="block"
-                className="md:px-4 px-3 rounded transition-colors duration-300"
-              >
-                Block Storage
-              </TabsTrigger>
-              <TabsTrigger
-                value="costs"
-                className="md:px-4 px-3 rounded transition-colors duration-300"
-              >
-                Costs
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="overview">
-              <Overview
-                isLoading={isLoading}
-                infrastructureData={infrastructureData}
-              />
-            </TabsContent>
-            <TabsContent value="databases">
-              {renderDatabaseContent({ isLoading, getDatabaseItems })}
-            </TabsContent>
-            <TabsContent value="servers">
-              {renderServersContent(isLoading, getServerItems)}
-            </TabsContent>
-            <TabsContent value="block">
-              {renderBlockContent({ isLoading, getBlockStorages })}
-            </TabsContent>
-            <TabsContent value="costs">
-              <Cost costData={costData} />
-            </TabsContent>
-          </Tabs>
-          <div className="chatbot">
-            {isChatbotOpen && (
-              <ChatBot diagramId={diagramId!} />
-            )}
-            <Button
-              onClick={() => setisChatbotOpen((prev) => !prev)}
-              className="fixed bottom-4 right-4 w-12 h-12 rounded-full p-0 bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-300"
+      <main className="container mx-auto py-8">
+        <Header onAIInsightsClick={() => setIsAIDialogOpen(true)} />
+        <Tabs defaultValue="overview" className="space-y-6">
+          <TabsList className="flex md:space-x-4 md:justify-start justify-between bg-transparent border border-[#222222]">
+            <TabsTrigger
+              value="overview"
+              className="md:px-4 px-3 rounded transition-colors duration-300"
             >
-              <MessageCircle className="h-6 w-6" />
-            </Button>
-          </div>
-        </main>
-      </Suspense>
+              Overview
+            </TabsTrigger>
+            <TabsTrigger
+              value="databases"
+              className="md:px-4 px-3 rounded transition-colors duration-300"
+            >
+              Databases
+            </TabsTrigger>
+            <TabsTrigger
+              value="servers"
+              className="md:px-4 px-3 rounded transition-colors duration-300"
+            >
+              Servers
+            </TabsTrigger>
+            <TabsTrigger
+              value="block"
+              className="md:px-4 px-3 rounded transition-colors duration-300"
+            >
+              Block Storage
+            </TabsTrigger>
+            <TabsTrigger
+              value="costs"
+              className="md:px-4 px-3 rounded transition-colors duration-300"
+            >
+              Costs
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview">
+            <Overview
+              isLoading={isLoading}
+              infrastructureData={infrastructureData}
+            />
+          </TabsContent>
+          <TabsContent value="databases">
+            {renderDatabaseContent({ isLoading, getDatabaseItems })}
+          </TabsContent>
+          <TabsContent value="servers">
+            {renderServersContent(isLoading, getServerItems)}
+          </TabsContent>
+          <TabsContent value="block">
+            {renderBlockContent({ isLoading, getBlockStorages })}
+          </TabsContent>
+          <TabsContent value="costs">
+            <Cost costData={costData} />
+          </TabsContent>
+        </Tabs>
+        <Suspense fallback={<div>Loading chatbot...</div>}>
+          <ChatbotSection />
+        </Suspense>
+      </main>
       <AIInsights
         isAIDialogOpen={isAIDialogOpen}
         setIsAIDialogOpen={setIsAIDialogOpen}
