@@ -32,7 +32,15 @@ export async function POST(req: Request) {
     const result = streamText({
       model: google("gemini-1.5-flash"),
       messages,
-      system: `You are a terraform expert. You are given a diagram and the corresponding terraform code. You need to answer the user's question based on the diagram and the terraform code. The following is the terraform code for the diagram: ${terraformCode}`,
+      system: `You are a terraform expert. You are given a diagram and the corresponding terraform code.
+       You need to answer the user's question based on the diagram and the terraform code. 
+       INSTRUCTIONS:
+      1. Respond in markdown format!.
+      2. Be concise and to the point.
+      3. Provide accurate and helpful information.
+      4. If you don't know the answer, say so. Don't make up an answer.
+      5. Be friendly and professional.
+       The following is the terraform code for the diagram: ${terraformCode}.`,
     });
 
     return result.toDataStreamResponse();

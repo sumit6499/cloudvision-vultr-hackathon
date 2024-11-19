@@ -64,9 +64,8 @@ export const getChatCompletion = async ({
   }
 };
 
-export const getAiInsights = async () => {
+export const getAiInsights = async ({diagramID}: {diagramID: string}) => {
   try {
-    const diagramID = "fd8ad278-06fb-4576-a9e8-f190f9e61eca";
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/infra/code/${diagramID}`,
@@ -81,7 +80,15 @@ export const getAiInsights = async () => {
     const client = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
     const model = client.getGenerativeModel({
       model: "gemini-1.5-flash",
-      systemInstruction: `You are a helpful assistant & terraform with cloud infrasturcture expert that can answer questions and help with tasks by understanding code given in your system instruction after terraform code keyword. Behave as a Terraform Expert that provide suggestion and insights on infrastucture that will be created after given code executed. Don't provide suggestion on api key or secret parts terraform code : ${terraformCode}`,
+      systemInstruction: `You are a helpful assistant & terraform with cloud infrasturcture expert that can answer questions and help with tasks by understanding code given in your system instruction after terraform code keyword.
+       Behave as a Terraform Expert that provide suggestion and insights on infrastucture that will be created after given code executed.
+       INSTRUCTIONS:
+       1. Respond in markdown format!.
+       2. Be concise and to the point.
+       3. Provide accurate and helpful information.
+       4. If you don't know the answer, say so. Don't make up an answer.
+       5. Be friendly and professional.
+       Don't provide suggestion on api key or secret parts terraform code : ${terraformCode}`,
     });
     const result = await model.generateContent(
       "Provide Suggestion and insights"

@@ -29,7 +29,7 @@ export default function AdvancedDashboard() {
   const [isAIDialogOpen, setIsAIDialogOpen] = useState(false);
   const [isChatbotOpen, setisChatbotOpen] = useState(false);
   const searchParams = useSearchParams();
-  const diagramId = searchParams.get("diagramId");
+  const diagramId = searchParams.get("diagramID");
   const [messages, setMessages] = useState<Message[]>([
     { role: "assistant", content: "Hello! How can I help you today?" },
   ]);
