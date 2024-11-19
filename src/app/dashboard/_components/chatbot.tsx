@@ -16,7 +16,7 @@ export const ChatBot = ({ diagramId }: { diagramId: string }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     body: {
-      diagramId: diagramId,
+      diagramId: diagramId ||localStorage.getItem("diagramId"),
     },
   });
 

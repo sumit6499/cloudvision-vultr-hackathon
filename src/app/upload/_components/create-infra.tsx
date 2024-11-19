@@ -15,6 +15,7 @@ export const CreateInfra = ({ diagramID }: { diagramID: string | null }) => {
   };
   useEffect(() => {
     if (success) {
+      localStorage.setItem("diagramId", diagramID!);
       window.location.href = `/dashboard?diagramId=${diagramID}`;
     }
   }, [success]);
